@@ -42,6 +42,11 @@ SObjectNode.searchNoChildren(parentRoleNode, '00E31000000esfA', track);
 
 System.debug(track);
 
+for(SObjectNode t : track ){
+ 
+ System.debug(t.data.get('name'));
+
+}
 
 
 //See reverse path
@@ -49,3 +54,9 @@ System.debug(track);
 List<SObjectNode> reverseTrack = SObjectNode.reversePath(track); 
 
 System.debug(reverseTrack);
+
+for(SObjectNode t : reverseTrack ){
+
+System.debug(t.data.get('name'));
+
+}
