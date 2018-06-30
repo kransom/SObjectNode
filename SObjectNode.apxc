@@ -31,7 +31,7 @@ public class SObjectNode {
 
 	}
 
-    // Search Tree - return found node path only
+    // Search Tree -  return found node tree 
 	public static Boolean search(SObjectNode node, String value, List<SObjectNode> track) {
 		if (node == null) {
 			return false;
@@ -50,7 +50,7 @@ public class SObjectNode {
 		return false;
 	}
 
-    // Search Tree - return found node tree
+    // Search Tree - return found node path only
 	public static Boolean searchNoChildren(SObjectNode node, String value, List<SObjectNode> track) {
 		if (node == null) {
 			return false;
