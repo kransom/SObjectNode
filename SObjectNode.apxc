@@ -1,0 +1,81 @@
+public class SObjectNode {
+	public SObjectNode parent;  // Main node
+	public SObject data; // Object
+	public List<SObjectNode> children;  // List of childern
+
+    // Head node constructor
+	public SObjectNode(SObject obj) {
+		this.parent = null;
+		this.data = obj;
+		this.children = new List<SObjectNode> ();
+	}    
+
+    // Child node constructor    
+	public SObjectNode(SObject obj, SObjectNode parent) {
+		this.parent = parent;
+		this.data = obj;
+		this.children = new List<SObjectNode> ();
+	}
+
+
+    // Populate Tree
+	public static void addChildren(List<SObject> objs, SObjectNode currentNode, String parentNameField) {
+
+		for (SObject obj : objs) {
+			if (obj.get(parentNameField) == currentNode.data.get('Id')) {
+				SObjectNode new_node = new SObjectNode(obj, currentNode);
+				SObjectNode.addChildren(objs, new_node, parentNameField);
+				currentNode.children.add(new_node);
+			}
+		}
+
+	}
+
+    // Search Tree - return found node path only
+	public static Boolean search(SObjectNode node, String value, List<SObjectNode> track) {
+		if (node == null) {
+			return false;
+		}
+		if (node.data.get('Id').equals(value)) {
+			track.add(node);
+			return true;
+		}
+
+		for (SObjectNode child : node.children) {
+			if (Search(child, value, track)) {
+				track.add(node);
+				return true;
+			}
+		}
+		return false;
+	}
+
+    // Search Tree - return found node tree
+	public static Boolean searchNoChildren(SObjectNode node, String value, List<SObjectNode> track) {
+		if (node == null) {
+			return false;
+		}
+		if (node.data.get('Id').equals(value)) {
+			track.add(new SObjectNode(node.data));
+			return true;
+		}
+
+		for (SObjectNode child : node.children) {
+			if (Search(child, value, track)) {
+				track.add(new SObjectNode(node.data));
+				return true;
+			}
+		}
+		return false;
+	}
+
+    // Reverse a single node path  
+	public static List<SObjectNode> reversePath(List<SObjectNode> track) {
+		List<SObjectNode> reversed = new List<SObjectNode> ();
+		for (Integer i = track.size() - 1; i >= 0; i--) {
+			reversed.add(track[i]);
+		}
+		return reversed;
+	}
+
+}
